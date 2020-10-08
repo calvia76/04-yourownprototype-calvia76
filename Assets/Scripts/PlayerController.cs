@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
+
 public class PlayerController : MonoBehaviour
 {
     public float speed = 5;
@@ -16,7 +17,10 @@ public class PlayerController : MonoBehaviour
     public SphereCollider col;
     private float movementX;
     private float movementY;
-    public float turnSpeed = 20f;
+
+    
+    
+    
 
     #region Monobehavior API
     // Start is called before the first frame update
@@ -25,13 +29,50 @@ public class PlayerController : MonoBehaviour
         rb = GetComponent<Rigidbody>();
         col = GetComponent<SphereCollider>();
     }
-    private void OnMove(InputValue movementValue)
+    public void OnMove(InputValue movementValue)
     {
         Vector2 movementVector = movementValue.Get<Vector2>();
 
         movementX = movementVector.x;
         
         movementY = movementVector.y;
+         
+    }
+    void Update()
+    {
+        CamTrigger camTrigger = gameObject.AddComponent<CamTrigger>();
+        if (camTrigger.IsCollided.Equals("Right"))
+        {
+            if (Input.GetKey(KeyCode.W))
+            {
+                transform.Rotate(new Vector3(0, 1, 0) * Time.deltaTime * speed, Space.World);
+
+                //W:     rb.velocity = transform.forward * speed;
+            }
+            if (Input.GetKey(KeyCode.S))
+            {
+                transform.Rotate(new Vector3(0, -1, 0) * Time.deltaTime * speed, Space.World);
+
+                //S:    rb.velocity = -transform.forward * speed;
+            }
+            if (Input.GetKey(KeyCode.D))
+            {
+                rb.velocity = -transform.forward * speed;
+
+                //D:    transform.Rotate(new Vector3(0, 1, 0) * Time.deltaTime * speed, Space.World);
+            }
+            if (Input.GetKey(KeyCode.A))
+            {
+                rb.velocity = transform.forward * speed; //W
+
+                //A:    transform.Rotate(new Vector3(0, -1, 0) * Time.deltaTime * speed, Space.World);
+            }
+
+
+        }else if (camTrigger.IsCollided.Equals("Left"))
+        {
+
+        }
     }
     // Update is called once per frame
     private void FixedUpdate()

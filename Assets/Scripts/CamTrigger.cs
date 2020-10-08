@@ -4,17 +4,31 @@ using UnityEngine;
 
 public class CamTrigger : MonoBehaviour
 {
-    public GameObject Rotator_1;
-    // Start is called before the first frame update
-    private void OnTriggerEnter(Collider other)
+    
+    public GameObject player;
+    private string collidePos = "";
+
+    public  string IsCollided
     {
-            
-            Camera.main.transform.Rotate(0.0f, -90.0f, 0.0f, Space.World);
-            //Camera.main.transform.position += Camera.main.transform.right;
-                
+
+        get { return collidePos; }
     }
-    private void OnTriggerExit(Collider other)
+    public void OnTriggerEnter(Collider other)
     {
-        print("yoot");
+        if (other.gameObject.tag == "Rotate_Right")
+        {
+            Camera.main.transform.Rotate(0.0f, -90.0f, 0.0f, Space.World);
+            //Camera.main.transform.position()
+            print("collision");
+            collidePos = "Right";
+        }else if (other.gameObject.tag == "Rotate_Left")
+        {
+            Camera.main.transform.Rotate(0.0f, 90.0f, 0.0f, Space.World);
+            collidePos = "Left";
+        }
+    }
+    public void CollisionReset()
+    {
+         collidePos = "";
     }
 }
