@@ -5,7 +5,9 @@ TagManager:
   serializedVersion: 2
   tags:
   - Ground
-  - Rotate_Right
+  - Death
+  - Coin
+  - End_Level
   layers:
   - Default
   - TransparentFX

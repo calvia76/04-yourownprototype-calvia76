@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class PlayerDeath : MonoBehaviour
 {
@@ -16,10 +17,13 @@ public class PlayerDeath : MonoBehaviour
     {
         if (other.tag == "Death")
         {
-            rb.velocity = Vector3.zero;
+            //respawn function will be used for later development
+            /*rb.velocity = Vector3.zero;
             rb.angularVelocity = Vector3.zero;
 
-            player.transform.position = respawnPoint.transform.position;
+            player.transform.position = respawnPoint.transform.position;*/
+            Scene Scene_1 = SceneManager.GetActiveScene();
+            SceneManager.LoadScene(Scene_1.name);
         }
     }
 }

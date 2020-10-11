@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
-
+using TMPro;
 
 public class PlayerController : MonoBehaviour
 {
@@ -19,8 +19,11 @@ public class PlayerController : MonoBehaviour
     private float movementY;
     float distance = 10;
 
-    
+    public GameObject coin;
 
+    private int count = 0;
+    public TextMeshProUGUI CountText;
+    public GameObject winTextObject;
 
 
     #region Monobehavior API
@@ -29,6 +32,9 @@ public class PlayerController : MonoBehaviour
     {
         rb = GetComponent<Rigidbody>();
         col = GetComponent<SphereCollider>();
+        
+        SetCountText();
+        winTextObject.SetActive(false);
     }
     public void OnMove(InputValue movementValue)
     {
@@ -41,9 +47,10 @@ public class PlayerController : MonoBehaviour
         
     }
     
-    void Update()
+    void FixedUpdate()
     {
-        //transform.Rotate(Vector3.up * movementX * turnSpeed * Time.deltaTime);
+        
+        
         Vector3 movement = new Vector3(movementX, 0,movementY);
         
         rb.AddForce(movement * speed);
@@ -58,7 +65,26 @@ public class PlayerController : MonoBehaviour
             new Vector3(col.bounds.center.x, col.bounds.min.y, col.bounds.center.z), col.radius * .95f, groundlayer);
     }
     #endregion
-    
+    public void SetCountText()
+    {
+        CountText.text = "Count: " + count.ToString();
 
-    
+    }
+
+    void OnTriggerEnter(Collider other)
+    {
+        if (other.gameObject.CompareTag("Coin"))
+        {
+            other.gameObject.SetActive(false);
+            count = count + 1;
+            SetCountText();
+        }
+        if (other.tag=="End_Level")
+        {
+            winTextObject.SetActive(true);
+            rb.velocity = Vector3.zero;
+            rb.angularVelocity = Vector3.zero;
+        }
+    }
+
 }
